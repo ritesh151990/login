@@ -6,19 +6,19 @@ import Button from '../UI/Button/Button';
 
 const emailReducer = (state, action) => {
   if (action.type === 'USER_INPUT'){
-    return{value: action.val, isValid: action.val.trim().length > 6 };
+    return{value: action.val, isValid: action.val.includes('@')};
   }
   if(action.type === 'INPUT_BLUR') {
-    return {value: state.value,isValid: state.value.trim().length > 6};
+    return {value: state.value,isValid: state.value.includes('@')};
   }
 return { value:'', isValid: false };
 };
 const passwordReducer= (state, action) => {
   if (action.type === 'USER_INPUT'){
-    return{value: action.val, isValid: action.val.includes('@') };
+    return{value: action.val, isValid: action.val.trim().length > 6 };
   }
   if(action.type === 'INPUT_BLUR') {
-    return {value: state.value,isValid: state.value.includes('@')}
+    return {value: state.value,isValid: state.value.trim().length > 6}
   }
 return { value:'', isValid: false };
 };
@@ -28,9 +28,9 @@ const Login = (props) => {
   // const [enteredPassword, setEnteredPassword] = useState('');
   // const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
-  const[emailState,dispatchEmail]=useReducer(emailReducer,{
+  const[emailState, dispatchEmail] = useReducer(emailReducer,{
     value :'',
-    isValid: false,
+    isValid: null,
   });
  const[passwordState,dispatchPassword] =useReducer(passwordReducer,{
   value :'',
@@ -40,7 +40,7 @@ const Login = (props) => {
   const { isValid: passwordIsValid } =passwordState;
   useEffect(() => {
    const identifier= setTimeout(() => {
-    setFormIsValid(emailIsValid && passwordIsValid );
+    setFormIsValid(emailIsValid && passwordIsValid);
 }, 500);
 
 return () =>{
